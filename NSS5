@@ -1,0 +1,14 @@
+Q1. Calculation of the modular inverse of a polynomial.
+
+Code:
+import sympy as sp
+
+# Define the polynomial and the prime modulus x = sp.symbols('x')
+polynomial = x*3 + 2*x*2 + x + 1 # Modify this with your polynomial prime_modulus = 5 # Modify this with your prime modulus
+
+# Calculate the modular inverse
+inverse_polynomial = sp.invert(polynomial, x, modulus=prime_modulus) if inverse_polynomial:
+print(f"The modular inverse of {polynomial} modulo {prime_modulus} is:") print(inverse_polynomial)
+else:
+print(f"No modular inverse exists for {polynomial} modulo
+{prime_modulus}.")

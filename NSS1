@@ -1,0 +1,166 @@
+Q1) Write a program to generate Caesar cipher for any plaintext. The shifting key must be asked as an input and the ciphertext generated.
+
+Code:
+#include<bits/stdc++.h> using namespace std;
+void ciphers(string a,int key)
+{
+string ans="";
+for(int i=0;i<a.size();i++)
+{
+if(a[i]>='a' && a[i]<='z')
+{
+ans+=((int)(a[i]-'a')+key)%(26) + 'a';
+}
+else if(a[i]>='A' && a[i]<='Z')
+{
+ans+=((int)(a[i]-'A')+key)%(26) + 'A';
+}
+else {ans+=a[i];}
+}
+cout<<ans<<endl; return ;
+}
+void deciphers(string a,int key)
+{
+string ans = ""; 
+for(int i=0;i<a.size();i++)
+{
+if(a[i]>='a' && a[i]<='z')
+{
+ans+=((int)(a[i]-'a')-key+26)%(26) + 'a';
+}
+else if(a[i]>='A' && a[i]<='Z')
+{
+ans+=((int)(a[i]-'A')-key+26)%(26) + 'A';
+}
+else ans+=a[i];
+}
+cout<<ans<<endl; return ;
+}
+int main(){int key;string s; cin>>key;
+cin.ignore(); getline(cin,s); ciphers(s,key); return 0;
+}
+
+Q2) Decipher the following Caesar cipher using K = 3: VRVRVHDPVWUHVV.
+
+Code:
+#include<bits/stdc++.h> using namespace std;
+void ciphers(string a,int key)
+{
+string ans = "";
+for(int i=0;i<a.size();i++)
+{
+if(a[i]>='a' && a[i]<='z')
+{
+ans+=((int)(a[i]-'a')+key)%(26) + 'a';
+}
+else if(a[i]>='A' && a[i]<='Z')
+{
+ans+=((int)(a[i]-'A')+key)%(26) + 'A';
+}
+else ans+=a[i];
+}
+cout<<ans<<endl; return ;
+}
+void deciphers(string a,int key)
+{
+string ans = "";
+for(int i=0;i<a.size();i++)
+{
+if(a[i]>='a' && a[i]<='z')
+{
+ans+=((int)(a[i]-'a')-key+26)%(26) + 'a'; 
+}
+else if(a[i]>='A' && a[i]<='Z')
+{
+ans+=((int)(a[i]-'A')-key+26)%(26) + 'A';
+}
+else ans+=a[i];
+}
+cout<<ans<<endl; return ;
+}
+int main(){ int key;
+string s;	cin>>key;
+cin>>s;
+deciphers(s,key); return 0;
+}
+
+Q3) Test your hypothesis by making the input of big text such as novels and make statistical analysis of characters of occurrence.
+
+Code:
+#include<bits/stdc++.h> using namespace std;
+void charcount(string s,int count[])
+{
+for(auto ch:s)
+{
+if(!isalpha(ch))continue; count[toupper(ch)-'A']++;
+}
+return ;
+}
+void printanalysis(int n,int count[])
+{
+for(int i=0;i<26;i++){
+cout<<char(i+'A')<<" :"<<(double(count[i])/(double(n)))<<endl;
+}
+return ;
+}
+int main(){	ifstream inputfile;
+inputfile.open("text.txt"); string s,line;
+while(getline(inputfile,line))
+{
+s+=line+"\n";
+}
+inputfile.close();
+int n = 0;int count[26]={0}; charcount(s,count);	for(auto a:count)n+=a;
+printanalysis(n,count); return 0;
+}
+
+Q4) Based on the statistical properties of the English language, decipher the following ciphertext, which was enciphered using the Caesar cipher: TEBKFKQEBZLROPBLCERJXKBSBKQP.
+
+Code:
+#include<bits/stdc++.h> using namespace std;
+void charcount(string s,int count[])
+{
+for(auto ch:s)
+{
+if(!isalpha(ch))continue;
+ 
+count[toupper(ch)-'A']++;
+}
+return ;
+}
+void deciphers(string a,int key)
+{
+string ans = "";
+for(int i=0;i<a.size();i++)
+{
+if(a[i]>='a' && a[i]<='z')
+{
+ans+=((int)(a[i]-'a')-key+26)%(26) + 'a';
+}
+else if(a[i]>='A' && a[i]<='Z')
+{
+ans+=((int)(a[i]-'A')-key+26)%(26) + 'A';
+}
+else ans+=a[i];
+}
+cout<<"after using the above table we get deciphers as:"<<endl;	cout<<ans<<endl; return ;
+}
+void printanalysis(int n,int count[])
+{
+for(int i=0;i<26;i++){
+cout<<char(i+'A')<<" :"<<(double(count[i])/(double(n)))<<endl;
+}
+return ;
+}
+ 
+int main(){
+ifstream	inputfile; inputfile.open("text.txt"); string s,line;
+while(getline(inputfile,line))
+{
+s+=line+"\n";
+}	inputfile.close();
+int n = 0;int count[26]={0}; charcount(s,count);
+for(auto a:count)n+=a; printanalysis(n,count);
+int key = ('B'-'E')+26; deciphers(s,key);
+return 0;
+}

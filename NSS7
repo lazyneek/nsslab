@@ -1,0 +1,29 @@
+Q) Write a program to implement coin flipping using RSA Algorithm.
+
+import random
+from sympy import isprime, nextprime
+
+def generate_rsa_keys():
+    p = nextprime(random.randint(100, 200))
+    q = nextprime(random.randint(200, 300))
+    n = p * q
+    phi_n = (p - 1) * (q - 1)
+
+    e = 65537  # commonly used value for e
+    d = pow(e, -1, phi_n)
+
+    return (e, n), (d, n)
+
+def coin_flip_rsa(public_key):
+    e, n = public_key
+    message = random.randint(0, 1)
+    encrypted_message = pow(message, e, n)
+    return encrypted_message
+
+def main():
+    public_key, private_key = generate_rsa_keys()
+    encrypted_message = coin_flip_rsa(public_key)
+    print("Encrypted coin flip result:", encrypted_message)
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,71 @@
+Q.Play-fair Cipher in 8X8 matrix generation using key and plain text having alphabets,numbers and special characters.
+
+Code:
+#include <bits/stdc++.h> #include <string>
+#include <vector> #include <cctype>
+using namespace std;
+vector<vector<char>> createPlayfairMatrix(string key) { vector<vector<char>> matrix(8, vector<char>(8));
+string uniqueKey = "";
+for (char c : key) {	if (!isspace(c)) {
+uniqueKey += toupper(c);
+}
+}
+int row = 0, col = 0;	for (char c
+: uniqueKey) {
+if (uniqueKey.find(c) == uniqueKey.find_last_of(c)) {	matrix[row][col]
+= c;
+col++;	if (col
+== 8) {	col = 0;
+row++;
+}
+}
+}
+int unicode = 33;	while (row
+< 8) {	for (; col < 8; col++) {
+matrix[row][col] = char(unicode); unicode++;
+}	col = 0;
+row++;
+}
+return matrix;
+}
+string encryptPlayfair(string message, vector<vector<char>> matrix) {	string ciphertext = "";
+for (size_t i = 0; i < message.length(); i++) {	char currentChar = toupper(message[i]);
+char nextChar = (i < message.length() - 1) ? toupper(message[i + 1]) : 'X';
+if (currentChar == nextChar) {	nextChar
+= 'X';
+i++;
+}
+ciphertext += currentChar; ciphertext += nextChar;
+}
+for (size_t i = 0; i < ciphertext.length(); i += 2) {	char char1 = ciphertext[i];
+char char2 = ciphertext[i + 1];
+int row1, col1, row2, col2;	for (int row
+= 0; row < 8; row++) {	for (int col = 0; col
+< 8; col++) {	if (matrix[row][col] == char1) {
+row1 = row;
+col1 = col;
+}
+if (matrix[row][col] == char2) {
+row2 = row;
+col2 = col;
+}
+}
+}
+if (row1 == row2) {	ciphertext[i] =
+matrix[row1][(col1 + 1) % 8];	ciphertext[i + 1] =
+matrix[row2][(col2 + 1) % 8];
+} else if (col1 == col2) {	ciphertext[i] = matrix[(row1 + 1) % 8][col1];
+ciphertext[i + 1] = matrix[(row2 + 1) % 8][col2];
+} else {
+ciphertext[i] = matrix[row1][col2];
+ciphertext[i + 1] = matrix[row2][col1];
+}
+}
+return ciphertext;
+}
+int main() {	string key, message;
+getline(cin, key);
+vector<vector<char>> matrix = createPlayfairMatrix(key);	getline(cin, message);
+string ciphertext = encryptPlayfair(message, matrix);	cout << "Ciphertext: " << ciphertext << endl;
+return 0;
+}

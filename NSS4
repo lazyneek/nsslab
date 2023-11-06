@@ -1,0 +1,41 @@
+Q1. To implement play-fair cipher to encrypt image in python.
+
+Code:
+import cv2
+import numpy as np import requests
+from PIL import Image from io import BytesIO
+
+# Function to perform step 4 of the algorithm def process_color_plane(plane, key_square):
+rows, cols = plane.shape[:2]
+
+for i in range(rows): for j in range(cols):
+# Get the pixel values pixel1 = plane[i, j]
+pixel2 = plane[i, (j + 1) % cols] # Wrapping around to the left key = key_square[i % 16 , j % 16] # Wraparound the key index
+
+# XOR the pixel values with the key plane[i, j] = pixel1 ^ key
+plane[i, (j + 1) % cols] = pixel2 ^ key
+
+# Download the image from the URL
+image_url = 'https://images.hdqwalls.com/wallpapers/best-nature-image.jpg' response = requests.get(image_url)
+image_data = BytesIO(response.content) plain_image = Image.open(image_data)
+
+# Check if the image is empty if plain_image is None:
+print("Error: Unable to read plain image.") exit()
+
+# Read the secret key
+secret_key = "Nitika1234567890!@#$%^&*()" # Replace with your secret key key_square = np.zeros((16, 16), dtype=np.uint8)
+
+# Construct the key square using the secret key for i in range(16):
+for j in range(16):
+key_square[i, j] = ord(secret_key[(i * 16 + j) % len(secret_key)])
+
+# Split the image into color planes
+channels = cv2.split(np.array(plain_image)) # Process each color plane
+for channel in channels: process_color_plane(channel, key_square)
+
+# Merge the processed color planes to get the cipher image cipher_image = cv2.merge(channels)
+# Save the cipher image cv2.imwrite('cipher_image.jpg', cipher_image)
+
+# Display the encrypted image import matplotlib.pyplot as plt
+plt.imshow(cv2.cvtColor(cipher_image, cv2.COLOR_BGR2RGB)) plt.show()
+print("Encryption completed. Cipher image saved as cipher_image.jpg")
